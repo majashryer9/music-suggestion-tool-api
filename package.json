@@ -19,7 +19,8 @@
   "homepage": "https://github.com/majashryer9/backend-music-suggestion-tool#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "neo4j-driver": "^4.1.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
