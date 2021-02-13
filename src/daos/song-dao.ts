@@ -7,7 +7,7 @@ export const saveSong = (song: Song) => {
   const session = driver.session();
   return session
     .writeTransaction(async (txc) => {
-      const query = `MERGE (song:Song { id: $song.id, name: $song.name, artist: $song.artist })`;
+      const query = `MERGE (song:Song { id: $song.id, name: $song.name, artist: $song.artist, albumImageUrl: $song.albumImageUrl, previewUrl: $song.previewUrl })`;
       const params = {
         song,
       };
