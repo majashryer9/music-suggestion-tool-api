@@ -1,10 +1,9 @@
 import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { songRouter } from "./routers/song-router";
-
-dotenv.config();
 
 const app = express();
 
