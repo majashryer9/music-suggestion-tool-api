@@ -17,7 +17,7 @@ export const saveSong = (song: Song) => {
     .catch(() => {
       throw new Error(constants.SAVE_FAILED);
     })
-    .finally(() => session.close);
+    .finally(() => session.close());
 };
 
 export const pairSongs = (id1: string, id2: string) => {
