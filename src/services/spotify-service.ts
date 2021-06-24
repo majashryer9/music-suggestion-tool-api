@@ -7,9 +7,7 @@ const getAccessToken = () => {
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
     const config = {
       headers: {
-        Authorization: `Basic ${Buffer.from(
-          clientId + ":" + clientSecret
-        ).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(clientId + ":" + clientSecret).toString("base64")}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     };
@@ -31,9 +29,7 @@ const getAccessToken = () => {
 export const search = async (searchTerm: string) => {
   try {
     const accessToken = await getAccessToken();
-    const url = `https://api.spotify.com/v1/search?q=${encodeURI(
-      searchTerm
-    )}&type=track&offset=0&limit=20`;
+    const url = `https://api.spotify.com/v1/search?q=${encodeURI(searchTerm)}&type=track&offset=0&limit=20`;
     const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -53,9 +49,7 @@ export const search = async (searchTerm: string) => {
 export const getRecommendations = async (ids: string[]) => {
   try {
     const accessToken = await getAccessToken();
-    const url = `https://api.spotify.com/v1/recommendations?market=US&seed_tracks=${ids.join(
-      "%2C"
-    )}`;
+    const url = `https://api.spotify.com/v1/recommendations?market=US&seed_tracks=${ids.join("%2C")}`;
     const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -69,5 +63,6 @@ export const getRecommendations = async (ids: string[]) => {
     });
   } catch (error) {
     // TODO: Error handling
+    return [];
   }
 };

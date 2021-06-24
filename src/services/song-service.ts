@@ -1,8 +1,8 @@
 import { Song } from "../models/Song";
 import * as songDAO from "../daos/song-dao";
+import * as spotifyService from "./spotify-service";
 
 export const pairSongs = (songs: Song[]) => {
-  // TODO: Only pair songs that are not spotify recommendations
   try {
     const savedSongs = Promise.all(songs.map((song) => songDAO.saveSong(song)));
     savedSongs.then(() => {
@@ -21,10 +21,32 @@ export const pairSongs = (songs: Song[]) => {
 
 export const getSimilarSongs = async (song: Song) => {
   try {
-    const records = await songDAO.getSimilarSongs(song.id);
-    const songs: Song[] = records.map((record) => record.get(0).properties);
+    const songs: Song[] = await songDAO.getSimilarSongs(song.id);
     return songs;
   } catch (error) {
     // TODO: Error handling
+    return [];
   }
 };
+
+export const generatePlaylist = async (selectedSongs: Song[]) => {
+  try {
+    const allSimilarSongs: Song[] = [];
+    selectedSongs.forEach(async (song) => {
+      const similarSongs = await getSimilarSongs(song);
+      allSimilarSongs.push(...similarSongs)
+    });
+    const spotifyRecommendations = await spotifyService.getRecommendations(selectedSongs.map(song => song.id));
+    // Finally we pair the songs selected in order to generate more data for better recommendations in the future
+    pairSongs(selectedSongs);
+    return [...allSimilarSongs, ...spotifyRecommendations].reduce((uniqueSongs: Song[], curSong: Song) => {
+      if (!uniqueSongs.find(song => song.id === curSong.id)) {
+        uniqueSongs.push(curSong);
+      }
+      return uniqueSongs;
+    }, []);
+  } catch (error) {
+    // TODO: Error handling
+    return [];
+  }
+}

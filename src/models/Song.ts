@@ -27,7 +27,7 @@ export interface Song {
   previewUrl: string;
 }
 
-export const mapSpotifyTrackToSong = (spotifyTrack: SpotifyTrack) => {
+export const mapSpotifyTrackToSong: (spotifyTrack: SpotifyTrack) => Song = (spotifyTrack: SpotifyTrack) => {
   return {
     id: spotifyTrack.id,
     name: spotifyTrack.name,

@@ -53,7 +53,7 @@ export const getSimilarSongs = (id: string) => {
         id,
       };
       const results = await txc.run(query, params);
-      return results.records;
+      return results.records.map(record => record.get(0).properties);
     })
     .catch(() => {
       throw new Error(constants.SIMILAR_SONGS_FAILED);
